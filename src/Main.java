@@ -6,8 +6,8 @@ public class Main {
         ChatBot chatBot = new ChatBot();
         System.out.println(chatBot.reply("/help"));
 
-        while (true){
-            String input = scanner.next();
+        while (!chatBot.over){
+            String input = scanner.nextLine();
             if (!input.isBlank()){
                System.out.println(chatBot.reply(input));
             }
