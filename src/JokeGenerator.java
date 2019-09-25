@@ -7,7 +7,7 @@ import com.google.gson.*;
 
 public class JokeGenerator {
     class Joke{
-        public String content;
+        String content;
     }
     public  static String getJoke() {
         String query = "http://rzhunemogu.ru/RandJSON.aspx?CType=1";
@@ -35,7 +35,7 @@ public class JokeGenerator {
                 }
 
                 //System.out.println(sb.toString());
-                Joke joke = new Gson().fromJson(sb.toString(), Joke.class);
+                Joke joke = new Gson().fromJson(replaceQuotes(sb), Joke.class);
                 out = joke.content;
             } else {
                 out = "fail: " + connection.getResponseCode() + ", " + connection.getResponseMessage();
@@ -48,5 +48,13 @@ public class JokeGenerator {
             }
         }
         return out;
+    }
+    private static String replaceQuotes(StringBuilder input){
+        for (int i = 12; i < input.length() - 3; i++){
+            if (input.charAt(i) == '\"'){
+                input.setCharAt(i, '\'');
+            }
+        }
+        return input.toString();
     }
 }
