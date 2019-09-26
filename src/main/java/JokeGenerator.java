@@ -3,6 +3,7 @@ package main.java;
 import com.google.gson.Gson;
 
 import java.io.BufferedReader;
+import java.io.IOException;
 import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
 import java.net.URL;
@@ -11,11 +12,12 @@ public class JokeGenerator {
     class Joke{
         String content;
     }
-    public  static String getJoke() {
+
+    public  static String getJoke() throws IOException {
         String query = "http://rzhunemogu.ru/RandJSON.aspx?CType=1";
         HttpURLConnection connection = null;
-        String out = "no joke todey";
-        try {
+        String out = "";
+        //try {
             connection = (HttpURLConnection) new URL(query).openConnection();
 
             connection.setRequestMethod("GET");
@@ -42,13 +44,13 @@ public class JokeGenerator {
             } else {
                 out = "fail: " + connection.getResponseCode() + ", " + connection.getResponseMessage();
             }
-        } catch(Throwable cause){
-            //cause.printStackTrace();
-        } finally{
-            if (connection != null) {
+//        } catch(Throwable cause){
+//            //cause.printStackTrace();
+//        } finally{
+//            if (connection != null) {
                 connection.disconnect();
-            }
-        }
+//            }
+//        }
         return out;
     }
     private static String replaceQuotes(StringBuilder input){

@@ -1,24 +1,44 @@
 package main.java;
 
-public class ChatBot {
-    public boolean over = false;
-    private User user;
-    private String state = "start";
+import java.io.IOException;
 
-    public String reply(String input){
+ class ChatBot {
+    boolean over = false;
+    private User user;
+
+    public enum State{
+        DEFAULT,
+        START,
+        LOAD_USER,
+        SAVE_JOKES
+    }
+
+    private State state = State.START;
+
+    String reply(String input){
         switch (state){
-            case "start":
-                state = "load user";
+            case START:
+                state = State.LOAD_USER;
                 return "Hi I'm Anekbot that'll tell u jokes if u want\n"
                         + "What's your name?\n";
-            case "load user":
-                user = User.createUser(input.trim());
-                state = "";
-                return "hi "+ user.name + "!\n"
-                        + "enter '/help' to find out what I can do";
-            case "save jokes":
-                state = "";
-                user.saveJokes(Integer.parseInt(input));
+            case LOAD_USER:
+                if (User.isValidUsername(input)) {
+                    user = User.createUser(input.trim());
+                    state = State.DEFAULT;
+                    return "hi " + user.name + "!\n"
+                            + "enter '/help' to find out what I can do";
+                }
+                else {
+                    return "invalid username? please try again";
+                }
+            case SAVE_JOKES:
+                try {
+                    user.saveJokes(Integer.parseInt(input));
+                }
+                catch (java.lang.NumberFormatException e){
+                    return "please enter a number";
+                }
+                state = State.DEFAULT;
                 return "saved!";
             default:
                 return getDefaultStateReply(input.trim().toLowerCase());
@@ -37,14 +57,24 @@ public class ChatBot {
                         + "\t/exit - I'll go away and leave you alone\n";
             case "/exit":
                 over = true;
-                user.saveData();
-                return "Bye bye c:";
+                try {
+                    user.saveData();
+                    return "Bye bye c:";
+                } catch (IOException e) {
+                    //TODO просить сохранять еще раз или выйти без сохранения
+                    return "Something went wrong, i didn't save anything sorry bye";
+                }
             case "tell a joke":
-                String joke = JokeGenerator.getJoke();
+                String joke;
+                try {
+                    joke = JokeGenerator.getJoke();
+                } catch (IOException e) {
+                    return "something went wrong, no joke for today.. sorry";
+                }
                 user.addToHistory(joke);
                 return joke;
             case "save to favourites":
-                state = "save jokes";
+                state = State.SAVE_JOKES;
                 return "how much?";
             case "show favourites":
                 return user.getFavourites();
