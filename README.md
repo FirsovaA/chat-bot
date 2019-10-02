@@ -6,5 +6,5 @@
 ## Запуск
 
 ```
-java main.java.Main.java
+java Main.java
 ```

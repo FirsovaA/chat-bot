@@ -1,12 +1,10 @@
-package main.java;
-
 import java.io.IOException;
 
- class ChatBot {
-    boolean over = false;
+ public class ChatBot {
+    public boolean over = false;
     private User user;
 
-    public enum State{
+    private enum State{
         DEFAULT,
         START,
         LOAD_USER,
@@ -15,7 +13,7 @@ import java.io.IOException;
 
     private State state = State.START;
 
-    String reply(String input){
+    public String reply(String input){
         switch (state){
             case START:
                 state = State.LOAD_USER;

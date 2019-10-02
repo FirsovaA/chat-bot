@@ -1,5 +1,3 @@
-package main.java;
-
 import com.google.gson.Gson;
 
 import java.io.*;
@@ -7,12 +5,12 @@ import java.util.ArrayList;
 import java.util.HashSet;
 
 
-class User {
+public class User {
     String name;
     private ArrayList<String> history;
     private HashSet<String> favourites;
 
-    static User createUser(String inpName){
+    public static User createUser(String inpName){
         try {
             //TODO проверять, что к найденному файлу есть доступ
             BufferedReader br = new BufferedReader(new FileReader("users/" + inpName +".json"));
@@ -28,11 +26,11 @@ class User {
         favourites = new HashSet<>();
     }
 
-    void saveJokes(int count){
+    public void saveJokes(int count){
         favourites.addAll(history.subList(Math.max(0,history.size()-count), history.size()));
     }
 
-    String getFavourites(){
+    public String getFavourites(){
         if (favourites.isEmpty()){
             return "";
         }
@@ -46,12 +44,12 @@ class User {
         return res.toString();
     }
 
-    void addToHistory(String joke){
+    public void addToHistory(String joke){
         history.add(joke);
     }
 
-    void saveData() throws IOException {
-        File file = new File("users/" + name +".json");;
+    public void saveData() throws IOException {
+        File file = new File("users/" + name +".json");
         new File("users/").mkdirs();
         file.createNewFile();
         FileWriter writer = new FileWriter(file);
@@ -59,7 +57,7 @@ class User {
         writer.close();
     }
 
-    static Boolean isValidUsername(String username){
+    public static Boolean isValidUsername(String username){
         return !username.matches(".*[\\\\/:*?\"<>|].*");
     }
 }
