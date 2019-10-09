@@ -10,11 +10,11 @@ public class User {
     private ArrayList<String> history;
     private HashSet<String> favourites;
 
-    public static User createUser(String inpName){
+    public static User loadUser(String inpName){
         try {
             //TODO проверять, что к найденному файлу есть доступ
             BufferedReader br = new BufferedReader(new FileReader("users/" + inpName +".json"));
-            return new  Gson().fromJson(br, User.class);
+            return new Gson().fromJson(br, User.class);
         } catch (FileNotFoundException e) {
             return new User(inpName);
         }
@@ -34,14 +34,7 @@ public class User {
         if (favourites.isEmpty()){
             return "";
         }
-
-        StringBuilder res = new StringBuilder();
-        res.append("***\n");
-        for (String joke: favourites) {
-            res.append(joke);
-            res.append("\n***\n");
-        }
-        return res.toString();
+        return String.join("\n***\n", favourites);
     }
 
     public void addToHistory(String joke){

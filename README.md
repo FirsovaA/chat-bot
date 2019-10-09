@@ -6,5 +6,5 @@
 ## Запуск
 
 ```
-java Main.java
+java Application.java
 ```

@@ -21,7 +21,7 @@ import java.io.IOException;
                         + "What's your name?\n";
             case LOAD_USER:
                 if (User.isValidUsername(input)) {
-                    user = User.createUser(input.trim());
+                    user = User.loadUser(input.trim());
                     state = State.DEFAULT;
                     return "hi " + user.name + "!\n"
                             + "enter '/help' to find out what I can do";
@@ -72,6 +72,7 @@ import java.io.IOException;
                 user.addToHistory(joke);
                 return joke;
             case "save to favourites":
+                //TODO как человек сразу с кол-вом и 1 по-умолчанию сохранять
                 state = State.SAVE_JOKES;
                 return "how much?";
             case "show favourites":
