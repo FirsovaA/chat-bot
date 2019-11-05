@@ -1,6 +1,3 @@
-import com.google.gson.Gson;
-
-import java.io.*;
 import java.util.ArrayList;
 import java.util.HashSet;
 
@@ -10,17 +7,7 @@ public class User {
     private ArrayList<String> history;
     private HashSet<String> favourites;
 
-    public static User loadUser(String inpName){
-        try {
-            //TODO проверять, что к найденному файлу есть доступ
-            BufferedReader br = new BufferedReader(new FileReader("users/" + inpName +".json"));
-            return new Gson().fromJson(br, User.class);
-        } catch (FileNotFoundException e) {
-            return new User(inpName);
-        }
-    }
-
-    private User(String inpName){
+    User(String inpName){
         name = inpName;
         history = new ArrayList<>();
         favourites = new HashSet<>();
@@ -32,7 +19,7 @@ public class User {
 
     public String getFavourites(){
         if (favourites.isEmpty()){
-            return "";
+            return "no saved jokes";
         }
         return String.join("\n***\n", favourites);
     }
@@ -41,14 +28,6 @@ public class User {
         history.add(joke);
     }
 
-    public void saveData() throws IOException {
-        File file = new File("users/" + name +".json");
-        new File("users/").mkdirs();
-        file.createNewFile();
-        FileWriter writer = new FileWriter(file);
-        writer.write(new Gson().toJson(this));
-        writer.close();
-    }
 
     public static Boolean isValidUsername(String username){
         return !username.matches(".*[\\\\/:*?\"<>|].*");

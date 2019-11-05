@@ -8,7 +8,7 @@ class UserTest {
 
     @BeforeEach
     void setUp() {
-        this.user = User.loadUser("test");
+        this.user = new User("");
     }
 
     @Test
@@ -47,22 +47,22 @@ class UserTest {
         Assertions.assertEquals(user.getFavourites(), "a");
     }
 
-    @Test
-    void saveNewUserData() {
-    }
-
-    @Test
-    void saveExistingUserData() {
-
-    }
-
-    @Test
-    void createNewUser() {
-
-    }
-
-    @Test
-    void loadUserFromFile(){
-
-    }
+//    @Test
+//    void saveNewUserData() {
+//    }
+//
+//    @Test
+//    void saveExistingUserData() {
+//
+//    }
+//
+//    @Test
+//    void loadNewUser() {
+//
+//    }
+//
+//    @Test
+//    void loadUserFromFile(){
+//
+//    }
 }

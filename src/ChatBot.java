@@ -3,12 +3,19 @@ import java.io.IOException;
  public class ChatBot {
     public boolean over = false;
     private User user;
+    private DataManager dataManager;
+    private JokeGenerator jokeGenerator;
 
     private enum State{
         DEFAULT,
         START,
         LOAD_USER,
         SAVE_JOKES
+    }
+
+    ChatBot(DataManager manager, JokeGenerator generator){
+        dataManager = manager;
+        jokeGenerator = generator;
     }
 
     private State state = State.START;
@@ -21,7 +28,7 @@ import java.io.IOException;
                         + "What's your name?\n";
             case LOAD_USER:
                 if (User.isValidUsername(input)) {
-                    user = User.loadUser(input.trim());
+                    user = dataManager.Load(input.trim());
                     state = State.DEFAULT;
                     return "hi " + user.name + "!\n"
                             + "enter '/help' to find out what I can do";
@@ -56,7 +63,7 @@ import java.io.IOException;
             case "/exit":
                 over = true;
                 try {
-                    user.saveData();
+                    dataManager.saveData(user);
                     return "Bye bye c:";
                 } catch (IOException e) {
                     //TODO просить сохранять еще раз или выйти без сохранения
@@ -65,7 +72,7 @@ import java.io.IOException;
             case "tell a joke":
                 String joke;
                 try {
-                    joke = JokeGenerator.getJoke();
+                    joke = jokeGenerator.Generate();
                 } catch (IOException e) {
                     return "something went wrong, no joke for today.. sorry";
                 }
@@ -74,7 +81,7 @@ import java.io.IOException;
             case "save to favourites":
                 //TODO как человек сразу с кол-вом и 1 по-умолчанию сохранять
                 state = State.SAVE_JOKES;
-                return "how much?";
+                return "how many?";
             case "show favourites":
                 return user.getFavourites();
             default:
