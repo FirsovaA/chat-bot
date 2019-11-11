@@ -5,7 +5,7 @@ public class Application {
         Scanner scanner = new Scanner(System.in);
         JsonDataManager manager = new JsonDataManager();
         JokeGenerator generator = new WebJokeGenerator();
-        ChatBot chatBot = new ChatBot(manager, generator);
+        ChatBot chatBot = new ChatBot(manager, generator, ChatBot.State.START);
         System.out.println(chatBot.reply(""));
 
         while (!chatBot.over){

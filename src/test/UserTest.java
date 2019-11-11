@@ -47,10 +47,14 @@ class UserTest {
         Assertions.assertEquals(user.getFavourites(), "a");
     }
 
-//    @Test
-//    void saveNewUserData() {
-//    }
-//
+    @Test
+    void saveNewUserData() {
+        User tester = new User("tester");
+        tester.addToHistory("The joke about a hat");
+        tester.saveJokes(1);
+        Assertions.assertEquals(tester.getFavourites(),"The joke about a hat");
+    }
+
 //    @Test
 //    void saveExistingUserData() {
 //

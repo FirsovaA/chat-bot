@@ -5,20 +5,22 @@ import java.io.IOException;
     private User user;
     private DataManager dataManager;
     private JokeGenerator jokeGenerator;
+    private State state;
 
-    private enum State{
+    public enum State{
         DEFAULT,
         START,
         LOAD_USER,
         SAVE_JOKES
     }
 
-    ChatBot(DataManager manager, JokeGenerator generator){
+    ChatBot(DataManager manager, JokeGenerator generator, State stateFrom){
         dataManager = manager;
         jokeGenerator = generator;
+        state = stateFrom;
     }
 
-    private State state = State.START;
+//    private State state = State.START;
 
     public String reply(String input){
         switch (state){
