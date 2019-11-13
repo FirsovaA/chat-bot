@@ -2,7 +2,7 @@ import com.google.gson.Gson;
 
 import java.io.*;
 
-public class JsonDataManager extends DataManager {
+public class JsonUserRepository extends UserRepository {
     @Override
     public User Load(String name) {
         try {

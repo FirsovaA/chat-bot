@@ -5,8 +5,8 @@ import org.junit.jupiter.api.Test;
 //TODO main.ChatBot tests
 class ChatBotTest {
     private ChatBot chatBot;
-    JsonDataManager manager = new JsonDataManager();
-    JokeGenerator generator = new WebJokeGenerator();
+    UserRepository manager = new TestUserRepository();
+    JokeGenerator generator = new TestJokeGenerator();
 
     @Test
     void replyToStart() {

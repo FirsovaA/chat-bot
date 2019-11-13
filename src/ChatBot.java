@@ -3,7 +3,7 @@ import java.io.IOException;
  public class ChatBot {
     public boolean over = false;
     private User user;
-    private DataManager dataManager;
+    private UserRepository dataManager;
     private JokeGenerator jokeGenerator;
     private State state;
 
@@ -14,7 +14,7 @@ import java.io.IOException;
         SAVE_JOKES
     }
 
-    ChatBot(DataManager manager, JokeGenerator generator, State stateFrom){
+    ChatBot(UserRepository manager, JokeGenerator generator, State stateFrom){
         dataManager = manager;
         jokeGenerator = generator;
         state = stateFrom;
@@ -75,7 +75,7 @@ import java.io.IOException;
                 String joke;
                 try {
                     joke = jokeGenerator.Generate();
-                } catch (IOException e) {
+                } catch (NoJokeException e) {
                     return "something went wrong, no joke for today.. sorry";
                 }
                 user.addToHistory(joke);
