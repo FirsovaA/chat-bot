@@ -1,9 +1,7 @@
-import java.io.IOException;
-
- public class ChatBot {
+public class ChatBot {
     public boolean over = false;
     private User user;
-    private UserRepository dataManager;
+    private UserRepository userRepository;
     private JokeGenerator jokeGenerator;
     private State state;
 
@@ -14,13 +12,11 @@ import java.io.IOException;
         SAVE_JOKES
     }
 
-    ChatBot(UserRepository manager, JokeGenerator generator, State stateFrom){
-        dataManager = manager;
+    ChatBot(UserRepository repository, JokeGenerator generator, State stateFrom){
+        userRepository = repository;
         jokeGenerator = generator;
         state = stateFrom;
     }
-
-//    private State state = State.START;
 
     public String reply(String input){
         switch (state){
@@ -30,7 +26,7 @@ import java.io.IOException;
                         + "What's your name?\n";
             case LOAD_USER:
                 if (User.isValidUsername(input)) {
-                    user = dataManager.Load(input.trim());
+                    user = userRepository.Load(input.trim());
                     state = State.DEFAULT;
                     return "hi " + user.name + "!\n"
                             + "enter '/help' to find out what I can do";
@@ -41,9 +37,13 @@ import java.io.IOException;
             case SAVE_JOKES:
                 try {
                     user.saveJokes(Integer.parseInt(input));
+                    userRepository.saveData(user);
                 }
                 catch (java.lang.NumberFormatException e){
                     return "please enter a number";
+                }
+                catch (Exception e){
+                    ErrLogger.log(e);
                 }
                 state = State.DEFAULT;
                 return "saved!";
@@ -64,21 +64,20 @@ import java.io.IOException;
                         + "\t/exit - I'll go away and leave you alone\n";
             case "/exit":
                 over = true;
-                try {
-                    dataManager.saveData(user);
-                    return "Bye bye c:";
-                } catch (IOException e) {
-                    //TODO просить сохранять еще раз или выйти без сохранения
-                    return "Something went wrong, i didn't save anything sorry bye";
-                }
+                return "Bye bye c:";
             case "tell a joke":
                 String joke;
                 try {
                     joke = jokeGenerator.Generate();
                 } catch (NoJokeException e) {
-                    return "something went wrong, no joke for today.. sorry";
+                    ErrLogger.log(e.cause);
+                    return "something went wrong, no joke for today.. sorry :с";
                 }
                 user.addToHistory(joke);
+                try {
+                    userRepository.saveData(user);
+                }
+                catch (Exception e){}
                 return joke;
             case "save to favourites":
                 //TODO как человек сразу с кол-вом и 1 по-умолчанию сохранять

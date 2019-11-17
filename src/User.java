@@ -6,6 +6,7 @@ public class User {
     String name;
     private ArrayList<String> history;
     private HashSet<String> favourites;
+    public ChatBot.State state;
 
     User(String inpName){
         name = inpName;

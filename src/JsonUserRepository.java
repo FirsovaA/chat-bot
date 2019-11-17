@@ -17,9 +17,8 @@ public class JsonUserRepository extends UserRepository {
     public void saveData(User user) throws IOException {
         File file = new File(String.format("users/%s.json", user.name));
         new File("users/").mkdirs();
-        file.createNewFile();
-        FileWriter writer = new FileWriter(file);
-        writer.write(new Gson().toJson(user));
-        writer.close();
+        try (FileWriter writer = new FileWriter(file)) {
+            writer.write(new Gson().toJson(user));
+        }
     }
 }
