@@ -5,12 +5,12 @@ public class TestUserRepository extends UserRepository {
     HashMap<String, User> storage = new HashMap<>();
 
     @Override
-    public User Load(String name) {
+    public User Load(Long id) {
         try {
-            return storage.get(name);
+            return storage.get(id);
         }
         catch (Exception e) {
-            return new User(name);
+            return new User(id);
         }
     }
 

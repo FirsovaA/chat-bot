@@ -2,13 +2,12 @@ import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
-
 class UserTest {
     private User user;
 
     @BeforeEach
     void setUp() {
-        this.user = new User("");
+        this.user = new User(0L);
     }
 
     @Test
@@ -49,10 +48,10 @@ class UserTest {
 
     @Test
     void saveNewUserData() {
-        User tester = new User("tester");
-        tester.addToHistory("The joke about a hat");
-        tester.saveJokes(1);
-        Assertions.assertEquals(tester.getFavourites(),"The joke about a hat");
+//        User tester = new User(0L);
+        user.addToHistory("The joke about a hat");
+        user.saveJokes(1);
+        Assertions.assertEquals(user.getFavourites(),"The joke about a hat");
     }
 
 //    @Test

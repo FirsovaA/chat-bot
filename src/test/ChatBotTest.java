@@ -1,40 +1,47 @@
 
 import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 //TODO main.ChatBot tests
 class ChatBotTest {
     private ChatBot chatBot;
-    UserRepository manager = new TestUserRepository();
-    JokeGenerator generator = new TestJokeGenerator();
+    private JokeGenerator generator = new TestJokeGenerator();
+    private User user = new User(-1L);
+
+    @BeforeEach
+    void setUp(){
+        chatBot = new ChatBot(generator);
+    }
 
     @Test
     void replyToStart() {
-        chatBot = new ChatBot(manager, generator, ChatBot.State.START);
-        String reply = chatBot.reply("hello");
+        user.setState(ChatBot.State.START);
+        String reply = chatBot.reply("hello", user);
         Assertions.assertEquals(reply, "Hi I'm Anekbot that'll tell u jokes if u want\n"
                         + "What's your name?\n" );
     }
 
     @Test
     void replyToIntroducing() {
-        chatBot = new ChatBot(manager, generator, ChatBot.State.LOAD_USER);
-        String reply = chatBot.reply("testUser");
+        chatBot = new ChatBot(generator);
+        user.setState(ChatBot.State.LOAD_USER);
+        String reply = chatBot.reply("testUser", user);
         Assertions.assertEquals(reply, "hi testUser!\n"
                 + "enter '/help' to find out what I can do" );
     }
 
     @Test
     void replyToInvalidUsername() {
-        chatBot = new ChatBot(manager, generator, ChatBot.State.LOAD_USER);
-        String reply = chatBot.reply("?*Username");
-        Assertions.assertEquals(reply, "invalid username? please try again");
+        user.setState(ChatBot.State.LOAD_USER);
+        String reply = chatBot.reply("?*Username", user);
+        Assertions.assertEquals(reply, "invalid username. please try again");
     }
 
     @Test
     void replyToDefaultHelp() {
-        chatBot = new ChatBot(manager, generator, ChatBot.State.DEFAULT);
-        String reply = chatBot.reply("/help");
+        user.setState(ChatBot.State.DEFAULT);
+        String reply = chatBot.reply("/help", user);
         Assertions.assertEquals(reply, "Hi I'm Anekbot that'll tell u jokes if u want\n"
                 + "U can ask me the following stuff:\n"
                 + "\ttell a joke - i'll tell u a joke\n"
@@ -46,9 +53,10 @@ class ChatBotTest {
 
     @Test
     void replyToDefaultExit() {
-        chatBot = new ChatBot(manager, generator, ChatBot.State.LOAD_USER); //a little bit kostyl
-        chatBot.reply("test");
-        String reply = chatBot.reply("/exit");
+        chatBot = new ChatBot(generator); //a little bit kostyl
+        user.setState(ChatBot.State.LOAD_USER);
+        chatBot.reply("test", user);
+        String reply = chatBot.reply("/exit", user);
         Assertions.assertEquals(reply, "Bye bye c:");
     }
 
@@ -56,7 +64,6 @@ class ChatBotTest {
 
 //    @Test
 //    void replyToJokeRequest() {
-//        chatBot = new ChatBot(manager, generator, ChatBot.State.DEFAULT);
 //        String reply = chatBot.reply("tell a joke");
 //        System.out.println(reply);
 //        Assertions.assertEquals(reply, );
@@ -66,33 +73,33 @@ class ChatBotTest {
 
     @Test
     void replyToDefaultSaveToFavourites() {
-        chatBot = new ChatBot(manager, generator, ChatBot.State.DEFAULT);
-        String reply = chatBot.reply("save to favourites");
+        user.setState(ChatBot.State.DEFAULT);
+        String reply = chatBot.reply("save to favourites", user);
         Assertions.assertEquals(reply, "how many?");
     }
 
     @Test
     void replyToSaveJokes() {
-        chatBot = new ChatBot(manager, generator, ChatBot.State.LOAD_USER); //a more than a little bit kostyl
-        chatBot.reply("test");
-        chatBot.reply("save to favourites");
-        String reply = chatBot.reply("42");
+        user.setState(ChatBot.State.LOAD_USER);
+        chatBot.reply("test", user);
+        chatBot.reply("save to favourites", user);
+        String reply = chatBot.reply("42", user);
         Assertions.assertEquals(reply, "saved!");
     }
 
     @Test
     void replyToSaveJokesWithNaNJokes() {
-        chatBot = new ChatBot(manager, generator, ChatBot.State.LOAD_USER); //a more than a little bit kostyl
-        chatBot.reply("test");
-        chatBot.reply("save to favourites");
-        String reply = chatBot.reply(" ");
+        user.setState(ChatBot.State.LOAD_USER);
+        chatBot.reply("test", user);
+        chatBot.reply("save to favourites", user);
+        String reply = chatBot.reply(" ", user);
         Assertions.assertEquals(reply, "please enter a number");
     }
 
     @Test
     void replyDefault(){
-        chatBot = new ChatBot(manager, generator, ChatBot.State.DEFAULT);
-        String reply = chatBot.reply("you are a joker");
+        user.setState(ChatBot.State.DEFAULT);
+        String reply = chatBot.reply("you are a joker", user);
         Assertions.assertEquals(reply, "uh sorry i don't understand you\ntry entering /help");
     }
 }
