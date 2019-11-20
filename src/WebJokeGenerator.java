@@ -4,7 +4,15 @@ import java.io.BufferedReader;
 import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
 import java.net.URL;
-
+import org.apache.http.HttpEntity;
+import org.apache.http.NoHttpResponseException;
+import org.apache.http.client.ClientProtocolException;
+import org.apache.http.client.ResponseHandler;
+import org.apache.http.client.methods.CloseableHttpResponse;
+import org.apache.http.client.methods.HttpGet;
+import org.apache.http.impl.client.CloseableHttpClient;
+import org.apache.http.impl.client.HttpClients;
+import org.apache.http.util.EntityUtils;
 public class WebJokeGenerator extends JokeGenerator {
 
     private static class Joke{
@@ -12,38 +20,22 @@ public class WebJokeGenerator extends JokeGenerator {
     }
 
     public String Generate() throws NoJokeException {
-        try {
-            String query = "http://rzhunemogu.ru/RandJSON.aspx?CType=1";
-            HttpURLConnection connection;
-            String out;
-
-            connection = (HttpURLConnection) new URL(query).openConnection();
-            connection.setRequestMethod("GET");
-            connection.setUseCaches(false);
-            connection.setConnectTimeout(250);
-            connection.setReadTimeout(250);
-            connection.connect();
-
-            StringBuilder sb = new StringBuilder();
-
-            if (HttpURLConnection.HTTP_OK == connection.getResponseCode()) {
-                BufferedReader anekdot = new BufferedReader(new InputStreamReader(connection.getInputStream(), "cp1251"));
-
-                String line;
-                while ((line = anekdot.readLine()) != null) {
-                    sb.append(line);
-                    sb.append("\n");
+        StringBuilder rawJoke;
+        try (CloseableHttpClient httpclient = HttpClients.createDefault()) {
+            HttpGet httpget = new HttpGet("http://rzhunemogu.ru/RandJSON.aspx?CType=1");
+            try (CloseableHttpResponse response = httpclient.execute(httpget)) {
+                HttpEntity entity = response.getEntity();
+                if (entity != null) {
+                    rawJoke = new StringBuilder(EntityUtils.toString(entity));
+                    WebJokeGenerator.Joke joke = new Gson().fromJson(replaceQuotes(rawJoke), WebJokeGenerator.Joke.class);
+                    return joke.content;
+                } else {
+                    throw new NoJokeException("Joke from response is null");
                 }
-
-                WebJokeGenerator.Joke joke = new Gson().fromJson(replaceQuotes(sb), WebJokeGenerator.Joke.class);
-                out = joke.content;
-            } else {
-                out = "fail: " + connection.getResponseCode() + ", " + connection.getResponseMessage();
+            } catch (NoHttpResponseException e) {
+                throw new NoHttpResponseException("No response from http server");
             }
-            connection.disconnect();
-            return out;
-        }
-        catch (Exception e){
+        } catch (Exception e) {
             throw new NoJokeException(e);
         }
     }

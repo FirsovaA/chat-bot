@@ -2,7 +2,11 @@ import java.io.IOException;
 import java.util.HashMap;
 
 public class TestUserRepository extends UserRepository {
-    HashMap<String, User> storage = new HashMap<>();
+    HashMap<String, User> storage;
+
+    TestUserRepository(){
+        storage = new HashMap<>();
+    }
 
     @Override
     public User Load(String name) {
@@ -10,7 +14,9 @@ public class TestUserRepository extends UserRepository {
             return storage.get(name);
         }
         catch (Exception e) {
-            return new User(name);
+            User user =  new User(name);
+            storage.put(name, user);
+            return user;
         }
     }
 
