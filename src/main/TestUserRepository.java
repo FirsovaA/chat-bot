@@ -9,14 +9,12 @@ public class TestUserRepository extends UserRepository {
     }
 
     @Override
-    public User Load(String name) {
+    public User Load(Long id) {
         try {
-            return storage.get(name);
+            return storage.get(id);
         }
         catch (Exception e) {
-            User user =  new User(name);
-            storage.put(name, user);
-            return user;
+            return new User(id);
         }
     }
 

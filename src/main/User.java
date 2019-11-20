@@ -4,14 +4,25 @@ import java.util.HashSet;
 
 public class User {
     String name;
+    Long id;
     private ArrayList<String> history;
     private HashSet<String> favourites;
-    public ChatBot.State state;
+    private ChatBot.State state;
 
-    User(String inpName){
-        name = inpName;
+    public void setState(ChatBot.State newState){
+        state = newState;
+    }
+
+    public ChatBot.State getState(){
+        return state;
+    }
+
+    User(Long id){
+        name = "User";
+        this.id = id;
         history = new ArrayList<>();
         favourites = new HashSet<>();
+        state = ChatBot.State.START;
     }
 
     public void saveJokes(int count){

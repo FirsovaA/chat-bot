@@ -5,8 +5,14 @@
 
 ## Запуск
 
+версия для консоли
 ```
-java Application.java
+java ConsoleApplication.java
+```
+
+версия для телеграма
+```
+java TelegramApplication.java
 ```
 
 ## TODO
