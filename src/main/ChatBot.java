@@ -61,13 +61,11 @@ public class ChatBot {
                 try {
                     joke = jokeGenerator.Generate();
                 } catch (NoJokeException e) {
-                    //TODO log(e);
                     return "something went wrong, no joke for today.. sorry :с";
                 }
                 user.addToHistory(joke);
                 return joke;
             case "save to favourites":
-                //TODO как человек сразу с кол-вом и 1 по-умолчанию сохранять
                 user.setState(State.SAVE_JOKES);
                 return "how many?";
             case "show favourites":

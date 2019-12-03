@@ -1,4 +1,3 @@
-import java.io.IOException;
 import java.util.HashMap;
 
 public class TestUserRepository extends UserRepository {
@@ -19,7 +18,7 @@ public class TestUserRepository extends UserRepository {
     }
 
     @Override
-    public void saveData(User user) throws IOException {
+    public void saveData(User user) {
         storage.put(user.name, user);
     }
 }

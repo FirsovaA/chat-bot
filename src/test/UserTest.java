@@ -48,24 +48,8 @@ class UserTest {
 
     @Test
     void saveNewUserData() {
-//        User tester = new User(0L);
         user.addToHistory("The joke about a hat");
         user.saveJokes(1);
         Assertions.assertEquals(user.getFavourites(),"The joke about a hat");
     }
-
-//    @Test
-//    void saveExistingUserData() {
-//
-//    }
-//
-//    @Test
-//    void loadNewUser() {
-//
-//    }
-//
-//    @Test
-//    void loadUserFromFile(){
-//
-//    }
 }

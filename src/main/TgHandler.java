@@ -4,8 +4,6 @@ import org.telegram.telegrambots.meta.api.objects.Message;
 import org.telegram.telegrambots.meta.api.objects.Update;
 import org.telegram.telegrambots.meta.exceptions.TelegramApiException;
 
-import java.io.IOException;
-
 public class TgHandler extends TelegramLongPollingBot {
     private ChatBot bot;
     private UserRepository userRepository;
@@ -23,10 +21,7 @@ public class TgHandler extends TelegramLongPollingBot {
         String txt = msg.getText();
         User user = userRepository.Load(msg.getChatId());
         sendMsg(msg, bot.reply(txt, user));
-        try {
-            userRepository.saveData(user);
-        }
-        catch (IOException e){}
+        userRepository.saveData(user);
     }
 
     private synchronized void sendMsg(Message msg, String text) {
@@ -35,7 +30,7 @@ public class TgHandler extends TelegramLongPollingBot {
         s.setText(text);
         try {
             execute(s);
-        } catch (TelegramApiException e){
+        } catch (TelegramApiException e) {
             e.printStackTrace();
         }
     }
@@ -47,6 +42,6 @@ public class TgHandler extends TelegramLongPollingBot {
 
     @Override
     public String getBotToken() {
-        return "INSERT_TOKEN";
+        return System.getenv("TOKEN");
     }
 }

@@ -5,6 +5,6 @@ public class TestJokeGenerator extends JokeGenerator {
 
     @Override
     public String Generate() throws NoJokeException {
-        return "a";
+        return "spider is the only web developer that loves finding bugs";
     }
 }
