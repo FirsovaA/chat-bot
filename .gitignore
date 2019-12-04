@@ -78,3 +78,4 @@ nb-configuration.xml
 ##############################
 .DS_Store
 /users/
+logs/log_file.log

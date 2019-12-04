@@ -11,7 +11,7 @@ public class TelegramApplication {
         try {
             botApi.registerBot(new TgHandler(chatBot, manager));
         } catch (TelegramApiException e) {
-            e.printStackTrace();
+            MyLogger.log(TgHandler.class, e);
         }
     }
 }

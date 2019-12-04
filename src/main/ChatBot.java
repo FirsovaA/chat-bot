@@ -6,7 +6,6 @@ public class ChatBot {
         DEFAULT,
         START,
         SET_NAME,
-        LOAD_USER,
         SAVE_JOKES
     }
 
@@ -49,8 +48,8 @@ public class ChatBot {
                 return "Hi I'm Anekbot that'll tell u jokes if u want\n"
                         + "U can ask me the following stuff:\n"
                         + "\t/joke - i'll tell u a joke\n"
-                        + "\tsave to favourites - i'll save a given amount of jokes(or less if i hadn't told u that much)\n"
-                        + "\tshow favourites - i'll show u ur saved jokes\n"
+                        + "\t/save_favourites - i'll save a given amount of jokes(or less if i hadn't told u that much)\n"
+                        + "\t/favourites - i'll show u ur saved jokes\n"
                         + "\t/set_name - change ur current name\n"
                         + "\t/help - i'll tell u what I can do\n";
             case "/set_name":
@@ -61,14 +60,15 @@ public class ChatBot {
                 try {
                     joke = jokeGenerator.Generate();
                 } catch (NoJokeException e) {
+                    MyLogger.log(jokeGenerator.getClass(), e);
                     return "something went wrong, no joke for today.. sorry :с";
                 }
                 user.addToHistory(joke);
                 return joke;
-            case "save to favourites":
+            case "/save_favourites":
                 user.setState(State.SAVE_JOKES);
                 return "how many?";
-            case "show favourites":
+            case "/favourites":
                 return user.getFavourites();
             default:
                 return "uh sorry i don't understand you\ntry entering /help";

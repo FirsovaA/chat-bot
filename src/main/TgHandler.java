@@ -31,7 +31,7 @@ public class TgHandler extends TelegramLongPollingBot {
         try {
             execute(s);
         } catch (TelegramApiException e) {
-            e.printStackTrace();
+            MyLogger.log(TgHandler.class, e);
         }
     }
 

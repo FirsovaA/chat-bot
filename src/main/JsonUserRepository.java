@@ -25,7 +25,7 @@ public class JsonUserRepository extends UserRepository {
         try (FileWriter writer = new FileWriter(file)) {
             writer.write(new Gson().toJson(user));
         } catch (IOException e) {
-            e.printStackTrace();
+            MyLogger.log(JsonUserRepository.class, e);
         }
     }
 }

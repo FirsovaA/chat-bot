@@ -18,6 +18,6 @@ java TelegramApplication.java
 ## TODO
 
 + <del> В репозитории обработка ошибок : закрыать файл всегда, а не только когда повезло.</del>
-+ <del> NoJokeException </del> (log добавить)
++ <del> NoJokeException </del>
 + HttpClient вместо connection
 + Цмоки в тестах.
