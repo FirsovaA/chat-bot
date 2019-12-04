@@ -4,8 +4,8 @@ public class ConsoleApplication {
     public static void main(String[] args) {
         Scanner scanner = new Scanner(System.in);
         JsonUserRepository manager = new JsonUserRepository();
-//        JokeGenerator generator = new WebJokeGenerator();
-        JokeGenerator generator = new LocalStorageJokesGenerator();
+        JokeGenerator generator = new WebJokeGenerator();
+//        JokeGenerator generator = new LocalStorageJokesGenerator();
         ChatBot chatBot = new ChatBot(generator);
         User user = new User(0L);
         System.out.println(chatBot.reply("", user));

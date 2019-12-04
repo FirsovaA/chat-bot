@@ -81,7 +81,7 @@ class ChatBotTest {
     @Test
     void replyToSaveJokes() {
         user.setState(ChatBot.State.SET_NAME);
-        chatBot.reply("test", user);
+        chatBot.reply("", user);
         chatBot.reply("/save_favourites", user);
         String reply = chatBot.reply("42", user);
         Assertions.assertEquals(reply, "saved!");
@@ -90,7 +90,7 @@ class ChatBotTest {
     @Test
     void replyToSaveJokesWithNaNJokes() {
         user.setState(ChatBot.State.SET_NAME);
-        chatBot.reply("test", user);
+        chatBot.reply("", user);
         chatBot.reply("/save_favourites", user);
         String reply = chatBot.reply(" ", user);
         Assertions.assertEquals(reply, "please enter a number");
