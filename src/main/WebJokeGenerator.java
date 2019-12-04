@@ -17,19 +17,17 @@ public class WebJokeGenerator extends JokeGenerator {
         StringBuilder rawJoke;
         try (CloseableHttpClient httpclient = HttpClients.createDefault()) {
             HttpGet httpget = new HttpGet("http://rzhunemogu.ru/RandJSON.aspx?CType=1");
-            try (CloseableHttpResponse response = httpclient.execute(httpget)) {
-                HttpEntity entity = response.getEntity();
-                if (entity != null) {
-                    rawJoke = new StringBuilder(EntityUtils.toString(entity));
-                    WebJokeGenerator.Joke joke = new Gson().fromJson(replaceQuotes(rawJoke), WebJokeGenerator.Joke.class);
-                    return joke.content;
-                } else {
-                    throw new NoJokeException("Joke from response is null");
-                }
-            } catch (NoHttpResponseException e) {
-                throw new NoHttpResponseException("No response from http server");
+            CloseableHttpResponse response = httpclient.execute(httpget);
+            HttpEntity entity = response.getEntity();
+            if (entity != null) {
+                rawJoke = new StringBuilder(EntityUtils.toString(entity));
+                WebJokeGenerator.Joke joke = new Gson().fromJson(replaceQuotes(rawJoke), WebJokeGenerator.Joke.class);
+                return joke.content;
+            } else {
+                throw new NoJokeException("Joke from response is null");
             }
-        } catch (Exception e) {
+        }
+        catch (Exception e) {
             throw new NoJokeException(e);
         }
     }
