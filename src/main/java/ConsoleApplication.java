@@ -1,3 +1,4 @@
+import java.io.IOException;
 import java.util.Scanner;
 
 public class ConsoleApplication {
@@ -14,7 +15,11 @@ public class ConsoleApplication {
             String input = scanner.nextLine();
             if (!input.isBlank()) {
                 System.out.println(chatBot.reply(input, user));
-                manager.saveData(user);
+                try {
+                    manager.saveData(user);
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
             }
         }
     }

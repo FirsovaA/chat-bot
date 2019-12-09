@@ -9,7 +9,7 @@ public class LocalStorageJokesGenerator extends JokeGenerator {
     @Override
     public String Generate() throws NoJokeException {
         try {
-            BufferedReader br = new BufferedReader(new FileReader("jokes.json"));
+            BufferedReader br = new BufferedReader(new FileReader("src/main/resources/jokes.json"));
             Random rand = new Random();
             var a = new Gson().fromJson(br, String[].class);
             return a[(rand.nextInt(a.length))];

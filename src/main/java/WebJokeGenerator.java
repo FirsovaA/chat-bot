@@ -1,4 +1,3 @@
-import com.google.gson.Gson;
 import org.apache.http.HttpEntity;
 import org.apache.http.client.methods.CloseableHttpResponse;
 import org.apache.http.client.methods.HttpGet;
@@ -16,7 +15,8 @@ public class WebJokeGenerator extends JokeGenerator {
             HttpEntity entity = response.getEntity();
             if (entity != null) {
                 JSONObject jokeJson = new JSONObject(EntityUtils.toString(entity));
-                return jokeJson.getJSONObject("value").getString("joke");
+                String joke = jokeJson.getJSONObject("value").getString("joke");
+                return joke.replaceAll("&quot;", "'");
             } else {
                 throw new NoJokeException("Joke from response is null");
             }

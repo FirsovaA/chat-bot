@@ -61,7 +61,7 @@ public class ChatBot {
                     joke = jokeGenerator.Generate();
                 } catch (NoJokeException e) {
                     MyLogger.log(jokeGenerator.getClass(), e);
-                    return "something went wrong, no joke for today.. sorry :с";
+                    return "something went wrong, no joke for today... sorry :с";
                 }
                 user.addToHistory(joke);
                 return joke;

@@ -19,13 +19,11 @@ public class JsonUserRepository extends UserRepository {
     }
 
     @Override
-    public void saveData(User user) {
+    public void saveData(User user) throws IOException {
         File file = new File(String.format("users/%s.json", user.id));
         new File("users/").mkdirs();
         try (FileWriter writer = new FileWriter(file)) {
             writer.write(new Gson().toJson(user));
-        } catch (IOException e) {
-            MyLogger.log(JsonUserRepository.class, e);
         }
     }
 }

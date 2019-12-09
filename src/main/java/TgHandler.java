@@ -4,6 +4,8 @@ import org.telegram.telegrambots.meta.api.objects.Message;
 import org.telegram.telegrambots.meta.api.objects.Update;
 import org.telegram.telegrambots.meta.exceptions.TelegramApiException;
 
+import java.io.IOException;
+
 public class TgHandler extends TelegramLongPollingBot {
     private ChatBot bot;
     private UserRepository userRepository;
@@ -17,22 +19,26 @@ public class TgHandler extends TelegramLongPollingBot {
 
     @Override
     public void onUpdateReceived(Update update) {
-        Message msg = update.getMessage();
-        String txt = msg.getText();
-        User user = userRepository.Load(msg.getChatId());
-        sendMsg(msg, bot.reply(txt, user));
-        userRepository.saveData(user);
+        try {
+            Message msg = update.getMessage();
+            String txt = msg.getText();
+            User user = userRepository.Load(msg.getChatId());
+            sendMsg(msg, bot.reply(txt, user));
+            userRepository.saveData(user);
+        }
+        catch (TelegramApiException e){
+            MyLogger.log(TgHandler.class, e);
+        }
+        catch (IOException e){
+            MyLogger.log(userRepository.getClass(), e);
+        }
     }
 
-    private synchronized void sendMsg(Message msg, String text) {
+    private synchronized void sendMsg(Message msg, String text) throws TelegramApiException{
         SendMessage s = new SendMessage();
         s.setChatId(msg.getChatId());
         s.setText(text);
-        try {
-            execute(s);
-        } catch (TelegramApiException e) {
-            MyLogger.log(TgHandler.class, e);
-        }
+        execute(s);
     }
 
     @Override
