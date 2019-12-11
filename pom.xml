@@ -17,7 +17,7 @@
 
     <build>
         <sourceDirectory>${project.basedir}/src/main/java</sourceDirectory>
-        <testSourceDirectory>${project.basedir}/src/test</testSourceDirectory>
+        <testSourceDirectory>${project.basedir}/src/test/java</testSourceDirectory>
         <resources>
             <resource>
                 <directory>${project.basedir}/src/main/resources</directory>
@@ -25,7 +25,7 @@
         </resources>
         <testResources>
             <testResource>
-                <directory>${project.basedir}/src/test</directory>
+                <directory>${project.basedir}/src/test/java</directory>
             </testResource>
         </testResources>
     </build>
